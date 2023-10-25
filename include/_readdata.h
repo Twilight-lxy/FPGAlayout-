@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <vector>
 #include <map>
+#include <algorithm>
 class ReadDataSource{
    public:
 //    static ReadDataSource &getInstance(){
@@ -14,6 +15,7 @@ class ReadDataSource{
 //    }
    ReadDataSource() {
      // Task.reserve(1000);
+     DieToDie.reserve(410);
      _read_die_network();
      _read_die_position();
      _readnet();
@@ -34,6 +36,14 @@ class ReadDataSource{
    const int DriverNum=0;
    //求解的驱动到负载结点
    std::map<int,std::vector<int>>Task;
+   //Die到Die的任务数
+   struct ty{
+      int from,to,val;
+      bool operator<(const struct ty& t)const{
+         return val<t.val;
+      }
+   };
+   std::vector<ty> DieToDie;
     // 读入design.net文件
     bool _readnet();
     //
@@ -46,6 +56,20 @@ class ReadDataSource{
 
     // 读入design.fpga.die文件
     bool _read_fpga();
+
+    //初始化数据
+    void  init();
+
+    //输出路径
+    void Printans_Path();
+
+    //输出Wrie信息
+    void Printans_Wire();
+
+
+    //布线求解过程
+    void Layout();
+
     ~ReadDataSource()=default;
 };
 

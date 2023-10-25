@@ -27,6 +27,11 @@ bool ReadDataSource::_readnet() {
         DriverId = num;
       else {
         Task[DriverId].push_back(num);
+        //DriverId-->num
+        int id=NodeToDie_Map[DriverId]*DieNum+NodeToDie_Map[num];
+        DieToDie[id].from=DriverId;
+        DieToDie[id].to=num;
+        DieToDie[id].val++;
       }
       // Debug
       // std::cout << line << std::endl;
@@ -138,4 +143,33 @@ bool ReadDataSource::_read_die_network() {
   DieNum = data[0].size();
   inputFile.close();
   return true;
+}
+
+void ReadDataSource::init(){
+    
+   // std::sort();
+ //将Die的任务进行数量进行排序
+ std::sort(DieToDie.begin(),DieToDie.end());
+ while(!DieToDie.front().val){
+   DieToDie.erase(DieToDie.begin());
+ }
+
+
+}
+// 分层图
+// 魔改 网络流
+// 慢启动防止拥塞
+// 暴搜？
+// 考虑FPGA的数量如何去优化
+//   
+void ReadDataSource:: Layout(){
+    
+
+}
+void ReadDataSource::Printans_Path(){
+
+}
+
+void ReadDataSource:: Printans_Wire(){
+   
 }
